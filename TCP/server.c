@@ -4,14 +4,14 @@
 #include <string.h>
 #include <sys/socket.h>
 #include <sys/types.h>
+#include <arpa/inet.h>
 #include <unistd.h>
-
-const char MESSAGE[] = "Hello UPO student!\n";
 
 int main(int argc, char *argv[]) {
     int simpleSocket = 0;
     int simplePort = 0;
     int returnStatus = 0;
+    char buffer[256] = "";
     struct sockaddr_in simpleServer;
 
     if (2 != argc) {
@@ -53,10 +53,16 @@ int main(int argc, char *argv[]) {
         exit(1);
     }
 
+    fprintf(
+        stderr, 
+        "Listening at IP %s and port %d\n", 
+        inet_ntoa(simpleServer.sin_addr),
+        simpleServer.sin_port
+    );
     /* lets listen on the socket for connections      */
     returnStatus = listen(simpleSocket, 5);
 
-    if (returnStatus == -1) {
+    if (returnStatus == -1  ) {
         fprintf(stderr, "Cannot listen on socket!\n");
         close(simpleSocket);
         exit(1);
@@ -80,10 +86,25 @@ int main(int argc, char *argv[]) {
             close(simpleSocket);
             exit(1);
         }
+        
+        memset(buffer, '\0', sizeof(buffer));
+        returnStatus = read(simpleChildSocket, buffer, sizeof(buffer) - 1);
 
-        /* handle the new connection request  */
-        /* write out our message to the client */
-        write(simpleChildSocket, MESSAGE, strlen(MESSAGE));
+        if (returnStatus > 0) {
+            buffer[returnStatus] = '\0'; // Null-terminate the received data
+            printf("Received %d bytes: %s\n", returnStatus, buffer);
+        } else {
+            fprintf(stderr, "Return Status = %d \n", returnStatus);
+        }
+
+        if (returnStatus > 0) {
+            printf("%d: %s", returnStatus, buffer);
+        } else {
+            fprintf(stderr, "Return Status = %d \n", returnStatus);
+        }
+
+        write(simpleChildSocket, buffer, strlen(buffer));
+
         close(simpleChildSocket);
     }
 

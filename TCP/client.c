@@ -8,10 +8,10 @@
 #include <unistd.h>
 
 int main(int argc, char *argv[]) {
+    char buffer[256] = "";
     int simpleSocket = 0;
     int simplePort = 0;
     int returnStatus = 0;
-    char buffer[256] = "";
     struct sockaddr_in simpleServer;
 
     if (3 != argc) {
@@ -55,6 +55,11 @@ int main(int argc, char *argv[]) {
         close(simpleSocket);
         exit(1);
     }
+
+    /* sending a message to the server */
+    printf("Input any string: ");
+    fgets(buffer, sizeof(buffer), stdin);
+    write(simpleSocket, buffer, sizeof(buffer));
 
     /* get the message from the server   */
     returnStatus = read(simpleSocket, buffer, sizeof(buffer));

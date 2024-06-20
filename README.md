@@ -3,11 +3,22 @@
 The course provides information about **TCP** and **UDP** connection using C programs to demonstrate basic communication instructions and usages in a Server-Client environment.
 
 ## Server and Client
-Further documentation about sockets, server-client interaction, TCP and UDP, visit the files linked below: 
+
+Further documentation about sockets, server-client interaction, TCP and UDP, visit the files linked below:
+
 - [TCP](https://github.com/meltmeltix/Networking-UPO/blob/main/docs/TCP.md)
 - [UDP](https://github.com/meltmeltix/Networking-UPO/blob/main/docs/UDP.md)
 
 ## Basic information and usage
+
+- [Byte order](#byte-order)
+- [Sockets and addresses](#sockets-and-addresses)
+- [Functions](#functions)
+  - [socket()](#socket)
+  - [bind()](#bind)
+  - [listen()](#listen)
+  - [accept()](#accept)
+  - [write() and close()](#write-and-close)
 
 ### Byte order
 
@@ -88,7 +99,7 @@ int addrlen;
 client_sock = accept(s, (struct sockaddr *) &sa, &addrlen);
 ```
 
-The server to actually establish a connection with a client. `accept()` blocks the server until a connection request arrives, or, if there are connection requests in the backlog queue, until a connection is established with the first client in the queue.
+Used by the server to accept a connection request from a client. When a connection is available, the socket created is ready for use to read data from the process that requested the connection. The call accepts the first connection on its queue of pending connections for the given socket socket.
 
 #### write() and close()
 
