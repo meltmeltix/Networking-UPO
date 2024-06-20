@@ -2,6 +2,11 @@
 
 The course provides information about **TCP** and **UDP** connection using C programs to demonstrate basic communication instructions and usages in a Server-Client environment.
 
+## Server and Client
+Further documentation about sockets, server-client interaction, TCP and UDP, visit the files linked below: 
+- [TCP](https://github.com/meltmeltix/Networking-UPO/blob/main/docs/TCP.md)
+- [UDP](https://github.com/meltmeltix/Networking-UPO/blob/main/docs/UDP.md)
+
 ## Basic information and usage
 
 ### Byte order
@@ -44,7 +49,7 @@ struct sockaddr_in {
 
 ### Functions
 
-Functions flow here
+![Socket functions flow](https://raw.githubusercontent.com/meltmeltix/Networking-UPO/main/docs/img/function_call_flow.png)
 
 #### socket()
 
@@ -93,8 +98,3 @@ close(socket)
 ```
 
 `write()` sends a buffer (MESSAGE) to the socket and `close()` closes the communication established with that socket.
-
-## Server and Client
-Further documentation about sockets, server-client interaction, TCP and UDP, visit the files linked below: 
-- Link here to TCP
-- Link here to UDP
