@@ -59,7 +59,7 @@ socket(AF_INET, SOCK_STREAM, 0)
 
 Takes as parameters *the address family, the type of socket and the networking protocol* to use. By default, `0` is used, letting the system determine the appropriate protocol to use.
 
-#### Bind
+#### bind()
 
 ```c
 struct sockaddr_in sa;
@@ -90,7 +90,7 @@ client_sock = accept(s, (struct sockaddr *) &sa, &addrlen);
 
 The server to actually establish a connection with a client. `accept()` blocks the server until a connection request arrives, or, if there are connection requests in the backlog queue, until a connection is established with the first client in the queue.
 
-### write() and close()
+#### write() and close()
 
 ```c
 write(socket, MESSAGE, strlen(MESSAGE));
