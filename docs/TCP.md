@@ -1,8 +1,7 @@
 # TCP server-client connection
 
 - [Server](#server)
-  - [Variables](#variables)
-  - [Defining the socket](#defining-the-socket)
+  - [Creating the server socket](#creating-the-server-socket)
   - [Setting up the server structure](#setting-up-the-server-structure)
   - [Listening for upcoming connections](#listening-for-upcoming-connections)
   - [Talking to the client](#talking-to-the-client)
@@ -12,7 +11,7 @@
 
 ## Server
 
-### Variables
+### Creating the server socket
 
 ```c
 int simpleSocket = 0;
@@ -26,11 +25,11 @@ struct sockaddr_in simpleServer;
 - `returnStatus` utility value used to check any operation;
 - `simpleServer` **Sock**et **Add**erss **In**. This specifies a transport address and a port for the address family.
 
-### Defining the socket
-
 ```c
 simpleSocket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
 ```
+
+Sock stream
 
 To establish a TCP connection we must pass the `IPPROTO_TCP` as protocol. The function will return `-1` if something went wrong during the creation of the socket.
 

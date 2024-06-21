@@ -27,7 +27,6 @@ int main(int argc, char *argv[]) {
     if (simpleSocket == -1) {
         fprintf(stderr, "Could not create a socket!\n");
         exit(1);
-
     } else {
         fprintf(stderr, "Socket created!\n");
     }
@@ -65,18 +64,20 @@ int main(int argc, char *argv[]) {
 
         /* wait here */
 
-        /* handle the new connection request  */
         memset(buffer, 0, sizeof(buffer));
+        returnStatus = recvfrom(
+            simpleSocket, 
+            buffer, 
+            sizeof(buffer) - 1,
+            0,
+            (struct sockaddr *)&clientName, 
+            &clientNameLength
+        );
 
-        returnStatus =
-            recvfrom(simpleSocket, buffer, sizeof(buffer) - 1, 0,
-                     (struct sockaddr *)&clientName, &clientNameLength);
         if (returnStatus > 0) {
-            /* If the string is terminated by \n, remove it */
             pin = strrchr(buffer, '\n');
             if (pin != NULL) *pin = '\0';
 
-            /* Print the IP address we are receiving the message from */
             inet_ntop(
                 AF_INET, 
                 &(clientName.sin_addr.s_addr), 
@@ -93,6 +94,20 @@ int main(int argc, char *argv[]) {
                 strerror(errno)
             );
         }
+
+        char response[] = "Hello, client!";
+        returnStatus = sendto(
+            simpleSocket,
+            response,
+            sizeof(response),
+            0,
+            (struct sockaddr *)&clientName,
+            clientNameLength
+        );
+
+        if (returnStatus < 0) {
+            fprintf(stderr, "Return Status = %d \n", returnStatus);
+        }   
     }
 
     close(simpleSocket);

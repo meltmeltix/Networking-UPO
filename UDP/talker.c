@@ -15,6 +15,7 @@ int main(int argc, char *argv[]) {
     int returnStatus = 0;
     char buffer[256] = "";
     struct sockaddr_in simpleServer;
+    int serverLenght = sizeof(simpleServer);
 
     if (3 != argc) {
         fprintf(stderr, "Usage: %s <server> <port>\n", argv[0]);
@@ -49,10 +50,26 @@ int main(int argc, char *argv[]) {
         MESSAGE, 
         sizeof(MESSAGE), 
         0,
-        (struct sockaddr *)&simpleServer, sizeof(simpleServer)
+        (struct sockaddr *)&simpleServer, 
+        serverLenght
     );
 
     if (returnStatus < 0) {
+        fprintf(stderr, "Return Status = %d \n", returnStatus);
+    }
+
+    returnStatus = recvfrom(
+        simpleSocket,
+        MESSAGE,
+        sizeof(MESSAGE),
+        0, 
+        (struct sockaddr *)&simpleServer, 
+        &serverLenght
+    );
+
+    if (returnStatus > 0) {
+        printf("%s\n", MESSAGE);
+    } else {
         fprintf(stderr, "Return Status = %d \n", returnStatus);
     }
 
