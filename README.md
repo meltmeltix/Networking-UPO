@@ -2,7 +2,33 @@
 
 The course provides information about **TCP** and **UDP** connection using C programs to demonstrate basic communication instructions and usages in a Server-Client environment.
 
-## Server and Client
+- [Differences between protocols](#differences-between-protocols)
+- [Basic information and usage](#basic-information-and-usage)
+  - [Byte order](#byte-order)
+  - [Sockets and addresses](#sockets-and-addresses)
+  - [Functions](#functions)
+    - [socket()](#socket)
+    - [bind()](#bind)
+    - [listen()](#listen)
+    - [accept()](#accept)
+    - [write() and close()](#write-and-close)
+
+## Differences between protocols
+
+| TCP | UDP |
+|-----|-----|
+| Reliable | Unreliable |
+| Connection-oriented | Connectionless |
+| Segment retransimission and flor control through windowing | No windowing or retransimission |
+| Segment sequencing | No sequencing |
+| Acknowledge segments | No acknowledgement |
+
+- **TCP is a stream type protocol**. It makes sure that the transmission between sender and recipient is stable by checking the flow of the transmission.
+- **UDP** on the other hand **is a datagram type protocol**. It is unreliable compared to TCP, but it is faster when it comes to low latency.
+
+| TCP | UDP |
+|-----|-----|
+| ![TCP flow]() | ![UDP flow]() |
 
 Further documentation about sockets, server-client interaction, TCP and UDP, visit the files linked below:
 
