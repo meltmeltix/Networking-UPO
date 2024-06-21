@@ -1,5 +1,15 @@
 # UDP server-client connection
 
+- [Server / Listener](#server--listener)
+  - [Server Socket setup](#server-socket-setup)
+    - [Variables](#variables)
+    - [Defining the socket](#defining-the-socket)
+    - [Setting up the server structure](#setting-up-the-server-structure)
+- [Waiting for clients](#waiting-for-clients)
+- [Client / Talker](#client--talker)
+  - [Client Socket setup](#client-socket-setup)
+  - [Connecting to the server](#connecting-to-the-server)
+
 ## Server / Listener
 
 ### Server Socket setup

@@ -1,17 +1,21 @@
 # TCP server-client connection
 
 - [Server](#server)
-  - [Creating the server socket](#creating-the-server-socket)
-  - [Setting up the server structure](#setting-up-the-server-structure)
-  - [Listening for upcoming connections](#listening-for-upcoming-connections)
-  - [Talking to the client](#talking-to-the-client)
+  - [Server Socket setup](#server-socket-setup)
+    - [Variables](#variables)
+    - [Defining the socket](#defining-the-socket)
+    - [Setting up the server structure](#setting-up-the-server-structure)
+  - [Listening and waiting to accept clients](#listening-and-waiting-to-accept-clients)
+    - [Talking to the client](#talking-to-the-client)
 - [Client](#client)
-  - [Creating the socket](#creating-the-socket)
+  - [Client Socket Setup](#client-socket-setup)
   - [Talking to the server](#talking-to-the-server)
 
 ## Server
 
-### Creating the server socket
+### Server Socket setup
+
+#### Variables
 
 ```c
 int simpleSocket = 0;
@@ -25,15 +29,19 @@ struct sockaddr_in simpleServer;
 - `returnStatus` utility value used to check any operation;
 - `simpleServer` **Sock**et **Add**erss **In**. This specifies a transport address and a port for the address family.
 
+#### Defining the socket
+
 ```c
 simpleSocket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
 ```
 
-Sock stream
+To create a TCP socket, we will need to:
 
-To establish a TCP connection we must pass the `IPPROTO_TCP` as protocol. The function will return `-1` if something went wrong during the creation of the socket.
+- Pass the address family the socket will use. `AF_INET` contains all the IPv4 family of addresses;
+- Set the socket type to stream passing `SOCK_STREAM`;
+- And then set the protocol to `IPROTO_TCP`;
 
-### Setting up the server structure
+#### Setting up the server structure
 
 ```c
 memset(&simpleServer, '\0', sizeof(simpleServer));
@@ -66,17 +74,19 @@ Then, with `bind` we are binding the server structure to the socket. Returns `0`
 > Any kind of connection and operation is done through a socket. A socket needs a pretty specific structure to actually properly do something: that's why we had to setup a structure containing all the server information.  
 > With bind, we pretty much told to the socket what it needs to do.
 
-### Listening for upcoming connections
+### Listening and waiting to accept clients
+
+Compared to a UDP socket, the socket will start listening for clients at a certain IP address and port.
 
 ```c
 returnStatus = listen(simpleSocket, 5);
 ```
 
-As said in the main documentation, the server now intends to **listen for connections on this socket**. listen() puts the socket into *passive open mode* and allocates a **backlog queue** of pending connections.
+The server now intends to **listen for connections on this socket**. `listen()` puts the socket into *passive open mode* and allocates a **backlog queue** of pending connections.
 
 Note that the *backlog queue* is the number passed as second parameter: the socket will queue (in this case) 5 connection requests before refusing any further request.
 
-### Talking to the client
+#### Talking to the client
 
 ```c
 struct sockaddr_in clientName = {0};
@@ -104,15 +114,13 @@ write(simpleChildSocket, buffer, strlen(buffer));
 close(simpleChildSocket);
 ```
 
-If everything went well, the server can start talking to the client socket and exchange data.
-
 ## Client
 
-### Creating the socket
+The client setup is pretty similar to the one used in a UDP application. The client simply attempts to connect to the server, and then exchange data accordingly.
 
-The process of crearting a socket is very streamlined across any socket function.
+Since the client is a TCP client, it will stream the data using `write()` and `read()` instead.
 
-A server is a simple socket that depending on how it's created, will open up to the defined addresses. A client on the other hand is also a socket, but it connects to the server's specific (allowed) IP address and port.
+### Client Socket Setup
 
 ```c
 int simpleSocket = 0;
@@ -120,9 +128,7 @@ int simplePort = 0;
 int returnStatus = 0;
 struct sockaddr_in simpleServer;
 
-// ...
 simpleSocket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
-// ...
 
 // bzero(&simpleServer, sizeof(simpleServer));
 memset(&simpleServer, '\0', sizeof(simpleServer));
@@ -131,6 +137,10 @@ simpleServer.sin_family = AF_INET;
 simpleServer.sin_addr.s_addr = inet_addr(argv[1]);
 simpleServer.sin_port = htons(simplePort);
 ```
+
+The client socket follows the same exact setup as the server, making sure to use the stream socket type.
+
+Unlike the server, as client, we need to define to which IP does the socket need to talk to: so, **during the server structure setup**, instead of passing a whole family of addresses, we pass the IP address and Port of the server socket to talk to.
 
 ### Talking to the server
 
@@ -142,5 +152,3 @@ write(simpleSocket, buffer, sizeof(buffer));
 returnStatus = read(simpleSocket, buffer, sizeof(buffer));
 close(simpleSocket);
 ```
-
-If everything went well, the client can start talking to the server socket and exchange data.
