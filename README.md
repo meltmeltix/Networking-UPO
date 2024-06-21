@@ -28,7 +28,7 @@ The course provides information about **TCP** and **UDP** connection using C pro
 
 | TCP | UDP |
 |-----|-----|
-| ![TCP flow]() | ![UDP flow]() |
+| ![TCP flow](https://raw.githubusercontent.com/meltmeltix/Networking-UPO/main/docs/img/tcp-flow.png) | ![UDP flow](https://raw.githubusercontent.com/meltmeltix/Networking-UPO/main/docs/img/udp-flow.png) |
 
 Further documentation about sockets, server-client interaction, TCP and UDP, visit the files linked below:
 
